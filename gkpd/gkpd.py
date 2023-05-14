@@ -31,9 +31,12 @@ def gkpd(tensor: torch.Tensor, a_shape: Union[list, tuple], b_shape: Union[list,
 
         u, s, v = torch.svd(w_unf)
         rank = len(s.detach().numpy()[np.abs(s.detach().numpy()) > atol])
+        
 
         # Note: pytorch reshaping follows C-order as well
         a_hat = torch.stack([s[i].item() * u[:, i].reshape(*a_shape) for i in range(rank)])  # [rank, *a_shape]
+        #print("a_hat shape",a_hat.shape)
         b_hat = torch.stack([v.T[i].reshape(*b_shape) for i in range(rank)])  # [rank, *b_shape]
+        #print("b_hat shape",b_hat.shape)
 
     return a_hat, b_hat
